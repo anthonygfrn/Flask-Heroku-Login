@@ -42,6 +42,6 @@ def create():
         conn.commit()
         cur.close()
         conn.close()
-        return redirect(url_for('index'))
+        return redirect(url_for('/restaurant/'))
         
     return render_template('create.html')

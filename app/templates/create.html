@@ -1,0 +1,47 @@
+{% extends 'navbar.html' %} {% block content %}
+<h1>{% block title %} Add a New Restaurant to the Database {% endblock %}</h1>
+<form method="post">
+  <p>
+    <label for="restaurant_name">Name:</label>
+    <input
+      type="text"
+      name="restaurant_name"
+      placeholder="Restaurant Name..."
+    />
+  </p>
+
+  <p>
+    <label for="area">Area:</label>
+    <input type="text" name="area" placeholder="Restaurant Area..." />
+  </p>
+
+  <p>
+    <label for="category">Category:</label>
+    <input type="text" name="category" placeholder="Restaurant Category..." />
+  </p>
+
+  <p>
+    <label for="restaurant_visited"
+      >How many users visited this restaurant:</label
+    >
+    <input
+      type="number"
+      name="restaurant_visited"
+      placeholder="Visited many times..."
+    />
+  </p>
+
+  <p>
+    <label for="average_rating">Average Rating (1-5):</label>
+    <input type="text" name="average_rating" placeholder="1-5" />
+  </p>
+  <p>
+    <label for="ratings_count">Ratings Count:</label>
+    <br />
+    <input type="number" name="ratings_count" placeholder="in millions" />
+  </p>
+  <p>
+    <button type="submit">Submit</button>
+  </p>
+</form>
+{% endblock %}

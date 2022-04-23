@@ -1,0 +1,9 @@
+{% extends 'navbar.html' %} {% block content %}
+<h1>{% block title %} Restaurants {% endblock %}</h1>
+{% for restaurant in restaurants %}
+<div class="restaurant">
+  <h3>#ID: {{ restaurant[0] }} - {{ restaurant[1] }} di {{ restaurant[2] }}</h3>
+  <i><p>Category: {{ restaurant[3] }}</p></i>
+  <i><p>Average Rating: {{ restaurant[5] }}</p></i>
+</div>
+{% endfor %} {% endblock %}

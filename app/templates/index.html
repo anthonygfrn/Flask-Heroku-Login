@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Restaurant Recommender {% endblock %}
+{% block content %}
+  <body>
+  <div class="card" style="padding: 2em" id="welcomecard">
+    <div class="container" >
+      <h3 class="top">Hello! &#x1F44B Thank you for visiting my restaurant recommender site.</h3>
+      <a href='/restaurant'><button type="button" class="btn btn-outline-dark">Enter</button></a>
+    </div>
+    <div class="container_note">
+      <small>This project is made for experimental use only. All data and information
+        will not be shared with any other entities. The sole purpose is to test and 
+        implement machine learning algorithms to generate user-specific restaurant recommendations.
+      </small>
+      <br>
+      <br>
+      <small>If you have any questions, feel free to reach out to<br>
+      <strong>Anthony Gufron</strong>
+        at <a href = "mailto: anthonygfrn@gmail.com">anthonygfrn@gmail.com.</a>
+      </small>
+    </div>
+  </div>
+  </body>
+</html>
+{% endblock %}

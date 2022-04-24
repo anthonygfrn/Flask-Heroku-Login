@@ -49,7 +49,7 @@ def fetch_restaurants():
     restaurant_list = []
     for restaurant in restaurants:
         restaurant_list.append({
-            # 'restaurant_id': restaurant.restaurant_id,
+            'restaurant_id': restaurant.restaurant_id,
             'restaurant_name': restaurant.restaurant_name,
             'area': restaurant.area,
             'category': restaurant.category,

@@ -1,7 +1,7 @@
 from app import application, engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import *
-from flask import request, jsonify
+from flask import render_template, request, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.orm import Session
 from flask_cors import CORS, cross_origin
@@ -15,10 +15,9 @@ session = Session(engine)
 metadata = MetaData(engine)
 
 
-@application.route('/index')
 @application.route('/')
 def index():
-    return 'Welcome to this page'
+    return render_template("index.html")
 
 
 @application.route('/register', methods=["GET", "POST"])

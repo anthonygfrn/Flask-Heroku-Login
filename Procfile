@@ -1,1 +1,1 @@
-web: gunicorn application:restaurant
+web:gunicorn application:restaurant

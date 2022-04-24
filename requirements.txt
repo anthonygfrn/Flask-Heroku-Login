@@ -11,4 +11,4 @@ gunicorn==19.5.0
 flask_cors
 psycopg2-binary
 python-dotenv
-Werkze.flasug
+Werkzeug

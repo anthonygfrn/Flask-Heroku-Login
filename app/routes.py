@@ -1,47 +1,61 @@
-import os
-import psycopg2
-from flask import Flask, render_template, request, url_for, redirect
-from app import app
+from app import application, engine
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy import *
+from flask import request, jsonify
+from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy.orm import Session
+from flask_cors import CORS, cross_origin
 
-def get_db_connection():
-    conn = psycopg2.connect(host='localhost',
-                            database='restaurant',
-                            user=os.environ['DB_USERNAME'],
-                            password=os.environ['DB_PASSWORD'])
-    return conn
+CORS(application, support_credentials=True)
+Base = automap_base()
+Base.prepare(engine, reflect=True)
+Accounts = Base.classes.account
+Restaurants = Base.classes.restaurants
+session = Session(engine)
+metadata = MetaData(engine)
 
-@app.route('/')
+
+@application.route('/index')
+@application.route('/')
 def index():
-   return render_template("index.html")
+    return 'Welcome to this page'
 
-@app.route('/restaurant/')
-def restaurant():
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM restaurants;')
-    restaurants = cur.fetchall()
-    cur.close()
-    conn.close()
-    return render_template('restaurant.html', restaurants=restaurants)
 
-@app.route('/create/', methods=('GET', 'POST'))
-def create():
-    if request.method == 'POST':
-        restaurant_name = request.form['restaurant_name']
-        area = request.form['area']
-        category = request.form['category']
-        restaurant_visited = int(request.form['restaurant_visited'])
-        average_rating = request.form['average_rating']
-        ratings_count = int(request.form['ratings_count'])
+@application.route('/register', methods=["GET", "POST"])
+def register():
+    username = request.args.get('username')
+    email = request.args.get('email')
+    password = request.args.get('password')
+    password_hash = generate_password_hash(password)
+    account = Table('account', metadata, autoload=True)
+    engine.execute(account.insert(), username=username,
+                   email=email, password=password_hash)
+    return jsonify({'user_added': True})
 
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('INSERT INTO restaurants (restaurant_name, area, category, restaurant_visited, average_rating, ratings_count)'
-                    'VALUES (%s, %s, %s, %s, %s, %s)',
-                    (restaurant_name, area, category, restaurant_visited, average_rating, ratings_count))
-        conn.commit()
-        cur.close()
-        conn.close()
-        return redirect(url_for('/restaurant/'))
-        
-    return render_template('create.html')
+
+@application.route('/sign_in', methods=["GET", "POST"])
+def sign_in():
+    username_entered = request.args.get('username')
+    password_entered = request.args.get('password')
+    user = session.query(Accounts).filter(or_(Accounts.username == username_entered, Accounts.email == username_entered)
+                                          ).first()
+    if user is not None and check_password_hash(user.password, password_entered):
+        return jsonify({'signed_in': True})
+    return jsonify({'signed_in': False})
+
+
+@application.route('/fetch_restaurants', methods=["GET", "POST"])
+def fetch_restaurants():
+    restaurants = session.query(Restaurants).all()
+    restaurant_list = []
+    for restaurant in restaurants:
+        restaurant_list.append({
+            # 'restaurant_id': restaurant.restaurant_id,
+            'restaurant_name': restaurant.restaurant_name,
+            'area': restaurant.area,
+            'category': restaurant.category,
+            # 'restaurant_visited': restaurant.restaurant_visited,
+            # 'average_rating': restaurant.average_rating,
+            # 'ratings_count': restaurant.ratings_count
+        })
+    return jsonify(restaurant_list)

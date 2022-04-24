@@ -7,8 +7,8 @@ itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
 SQLAlchemy==1.3.16
-Werkze.flasug==1.0.1
 gunicorn==19.5.0
 flask_cors
 psycopg2-binary
 python-dotenv
+Werkze.flasug
